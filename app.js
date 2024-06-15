@@ -24,7 +24,7 @@ app.set('trust proxy',1)
 const {routerauth,router}=require('./routes');
 const connectDB = require('./db/connect');
 app.get('/',(req,res)=>{
-  res.send('<h1>Documentation</h1><a href="/api">doc</a>')
+  res.send('<h1>Documentation</h1><a href="/apidocs">doc</a>')
 })
 app.use('/apidocs',swaggerui.serve,swaggerui.setup(swaggedocument));
 app.use('/api/v1',routerauth,authenticationmiddleware,router);
