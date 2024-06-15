@@ -23,15 +23,17 @@ app.use(ratelimiter({windowMs: 15 * 60 * 1000,
 	limit: 100, }))
 const {routerauth,router}=require('./routes');
 const connectDB = require('./db/connect');
+app.get('/',(req,res)=>{
+  res.send('<h1>Documentation</h1><a href="/api">doc</a>')
+})
+app.use('/apidocs',swaggerui.serve,swaggerui.setup(swaggedocument));
 app.use('/api/v1',routerauth,authenticationmiddleware,router);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 
-app.use('/api',swaggerui.serve,swaggerui.setup(swaggedocument));
-app.get('/',(req,res)=>{
-  res.send('<h1>Documentation</h1><a href="/api">doc</a>')
-})
+
+
 const port = process.env.PORT || 3000;
 
 const start = async () => {
