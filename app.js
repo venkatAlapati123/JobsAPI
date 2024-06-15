@@ -19,8 +19,8 @@ app.use(xss())
 app.use(helmet())
 app.use(cors())
 app.set('trust proxy',1)
-app.use(ratelimiter({windowMs: 15 * 60 * 1000, 
-	limit: 100, }))
+// app.use(ratelimiter({windowMs: 15 * 60 * 1000, 
+// 	limit: 100, }))
 const {routerauth,router}=require('./routes');
 const connectDB = require('./db/connect');
 app.get('/',(req,res)=>{
