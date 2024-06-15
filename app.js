@@ -7,6 +7,9 @@ const xss=require('xss-clean')
 const helmet=require('helmet');
 const ratelimiter=require('express-rate-limit')
 const cors=require('cors');
+const swaggerui=require('swagger-ui-express');
+const yamljs=require('yamljs');
+const swaggedocument=yamljs.load('./swagger.yaml');
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
@@ -18,14 +21,17 @@ app.use(cors())
 app.set('trust proxy',1)
 app.use(ratelimiter({windowMs: 15 * 60 * 1000, 
 	limit: 100, }))
-// extra packages
 const {routerauth,router}=require('./routes');
 const connectDB = require('./db/connect');
-// routes
 app.use('/api/v1',routerauth,authenticationmiddleware,router);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
+
+app.use('/api',swaggerui.serve,swaggerui.setup(swaggedocument));
+app.get('/',(req,res)=>{
+  res.send('<h1>Documentation</h1><a href="/api">doc</a>')
+})
 const port = process.env.PORT || 3000;
 
 const start = async () => {
